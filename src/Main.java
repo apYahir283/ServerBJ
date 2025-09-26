@@ -24,7 +24,11 @@ public class Main {
         BufferedReader inj1 = new BufferedReader(putJ1);
         PrintWriter outj1 = new PrintWriter(jugador1.getOutputStream(), true);
 
-        String modo = inj1.readLine();
+        String modo = null;
+
+        while (modo==null){
+            modo = inj1.readLine();
+        }
 
         if (modo.equalsIgnoreCase("dos")){
             System.out.println("Servidor en modo 2");
@@ -40,66 +44,92 @@ public class Main {
 
             PrintWriter outj2 = new PrintWriter(jugador2.getOutputStream(), true);
 
-            do {
-
-            //Utilidades
             String continuaj1 = inj1.readLine(),
                     continuaj2;
-            int ncarta1,ncarta2;
-            int sumaj1, sumaj2;
+            while (continuaj1==null){
+                continuaj1 = inj1.readLine();
+            }
+            continuaj2="JUGAR";
 
-            System.out.println("Inicio de partida, comienza j1");
+            do {
+                //Utilidades
 
-            if (continuaj1.equals("si")) {
-                while (continuaj1.equals("si")) {
+                int ncarta1,ncarta2;
 
-                    ncarta1 = Integer.parseInt(inj1.readLine());
-                    System.out.println("Se recibio el numero de la carta del j1");
-                    outj2.println(ncarta1);
-                    System.out.println("Se envio el numero de la carta a j2");
-                    if (jugador1.isClosed() || jugador2.isClosed()) {
-                        System.out.println("Un jugador se desconecto Terminando partida.");
-                        break;
-                    }
+                System.out.println("Inicio de partida, comienza j1");
 
-                    System.out.println("Pregunta si quiere otra carta j1");
-                    continuaj1 = inj1.readLine();
-                    if (continuaj1.equalsIgnoreCase("no")){
-                        System.out.println("Continuando al turno j2");
+                if (continuaj1.equals("si")) {
+                    while (continuaj1.equals("si")) {
+
+                        ncarta1 = Integer.parseInt(inj1.readLine());
+                        while (ncarta1==0){
+                            ncarta1 = Integer.parseInt(inj1.readLine());
+                        }
+                        System.out.println("Se recibio el numero de la carta del j1");
+                        outj2.println(ncarta1);
+                        System.out.println("Se envio el numero de la carta a j2");
+                        if (jugador1.isClosed() || jugador2.isClosed()) {
+                            System.out.println("Un jugador se desconecto Terminando partida.");
+                            break;
+                        }
+                        System.out.println("Pregunta si quiere otra carta j1");
+                        continuaj1 = inj1.readLine();
+                        while (continuaj1==null){
+                            continuaj1 = inj1.readLine();
+                        }
+                        if (continuaj1.equalsIgnoreCase("no")){
+                            System.out.println("Continuando al turno j2");
+                        }
                     }
                 }
-            }
-            continuaj2 = inj2.readLine();
-            if (continuaj2.equals("si")) {
-                while (continuaj2.equals("si")) {
-
-                    ncarta2 = Integer.parseInt(inj2.readLine());
-                    System.out.println("Se recibio el numero de la carta del j2");
-                    outj1.println(ncarta2);
-                    System.out.println("Se envio el numero de la carta a j1");
-                    if (jugador1.isClosed() || jugador2.isClosed()) {
-                        System.out.println("Un jugador se desconecto Terminando partida.");
-                        break;
-                    }
-
-                    System.out.println("Pregunta si quiere otra carta j2");
+                continuaj2 = inj2.readLine();
+                while (continuaj2==null){
                     continuaj2 = inj2.readLine();
-                    if (continuaj2.equalsIgnoreCase("no")){
-                        System.out.println("Evaluacion");
+                }
+                if (continuaj2.equals("si")) {
+                    while (continuaj2.equals("si")) {
+
+                        ncarta2 = Integer.parseInt(inj2.readLine());
+                        while (ncarta2==0){
+                            ncarta2 = Integer.parseInt(inj2.readLine());
+                        }
+                        System.out.println("Se recibio el numero de la carta del j2");
+                        outj1.println(ncarta2);
+                        System.out.println("Se envio el numero de la carta a j1");
+                        if (jugador1.isClosed() || jugador2.isClosed()) {
+                            System.out.println("Un jugador se desconecto Terminando partida.");
+                            break;
+                        }
+
+                        System.out.println("Pregunta si quiere otra carta j2");
+                        continuaj2 = inj2.readLine();
+                        while (continuaj2==null){
+                            continuaj2 = inj2.readLine();
+                        }
+                        if (continuaj2.equalsIgnoreCase("no")){
+                            System.out.println("Evaluacion");
+                        }
                     }
                 }
-            }
-            //evaluacion
+                //evaluacion
 
-            System.out.println("si quiere continuar");
-            inj1.readLine();
-            inj2.readLine();
-                } while (inj1.readLine().equalsIgnoreCase(inj2.readLine()));
+                System.out.println("si quiere continuar");
+                continuaj1 = inj1.readLine();
+                continuaj2 = inj2.readLine();
+                while (continuaj1==null || continuaj2==null){
+                    if (continuaj1==null) continuaj1 = inj1.readLine();
+                    if (continuaj2==null) continuaj2 = inj2.readLine();
+                }
+                if (!continuaj1.equalsIgnoreCase("JUGAR") || !continuaj2.equalsIgnoreCase("JUGAR")) {
+                    //devolver mensaje
+                    System.out.println("Uno de los jugadores no desea continuar");
+                    break;
+                }
+
+            } while (inj1.readLine().equalsIgnoreCase("JUGAR") && inj2.readLine().equalsIgnoreCase("JUGAR"));
 
         } else if (modo.equalsIgnoreCase("alt")) {
-
         }
-
 
     }
 }
